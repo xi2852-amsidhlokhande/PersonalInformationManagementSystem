@@ -1,6 +1,5 @@
 package com.amsidh.mvc.model.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -26,7 +24,4 @@ public class ErrorDetails implements Serializable {
   private String message;
   private String reason;
   private List<ApiValidationError> fieldErrors;
-
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyyy hh:mm:ss")
-  private LocalDateTime timestamp;
 }

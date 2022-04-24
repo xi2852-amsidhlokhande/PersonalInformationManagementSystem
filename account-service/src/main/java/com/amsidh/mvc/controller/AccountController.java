@@ -1,8 +1,10 @@
 package com.amsidh.mvc.controller;
 
+import com.amsidh.mvc.client.AssetServiceFeignClient;
 import com.amsidh.mvc.model.request.account.AccountRequest;
 import com.amsidh.mvc.model.request.account.UpdateAccountRequest;
 import com.amsidh.mvc.model.response.account.AccountResponse;
+import com.amsidh.mvc.model.response.asset.AssetResponse;
 import com.amsidh.mvc.service.AccountService;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,8 @@ import java.util.List;
 public class AccountController {
     private final AccountService accountService;
     private final Gson gson;
+
+    private final AssetServiceFeignClient assetServiceFeignClient;
 
     @PostMapping
     public AccountResponse saveAccount(@Valid @RequestBody AccountRequest accountRequest) {
@@ -41,6 +45,8 @@ public class AccountController {
         log.info("Request received for getting account by accountId {}", accountId);
         AccountResponse accountResponse = accountService.findByAccountId(accountId);
         log.info("Returning response with account {}", accountResponse);
+        AssetResponse asset = this.assetServiceFeignClient.getAssetByAssetId(1);
+        log.info("Response received from asset-service {}", gson.toJson(asset));
         return accountResponse;
     }
 

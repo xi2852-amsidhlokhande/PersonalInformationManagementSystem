@@ -19,8 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.amsidh.mvc.handler.ErrorCodeConfigProperties.ERRORS;
-import static com.amsidh.mvc.model.response.ApiValidationError.builder;
+import static com.amsidh.mvc.handler.ErrorCode.ERRORS;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -31,8 +30,7 @@ public class CommonAdviceController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {DataNotFoundException.class})
     @ResponseStatus(OK)
     public ErrorDetails handleDataNotFoundException(DataNotFoundException dataNotFoundException) {
-        ErrorDetails errorDetails = ERRORS.get(dataNotFoundException.getMessage());
-        return errorDetails;
+        return ERRORS.get(dataNotFoundException.getMessage());
     }
 
     @Override
@@ -48,7 +46,8 @@ public class CommonAdviceController extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<ApiValidationError> fieldErrors = ex.getBindingResult()
                 .getFieldErrors().stream()
-                .map(fieldError -> builder().field(fieldError.getField()).message(fieldError.getDefaultMessage()).object(fieldError.getObjectName()).rejectedValue(fieldError.getRejectedValue()).build()).collect(Collectors.toList());
+                .map(fieldError -> ApiValidationError.builder().field(fieldError.getField()).message(fieldError.getDefaultMessage()).object(fieldError.getObjectName()).rejectedValue(fieldError.getRejectedValue()).build())
+                .collect(Collectors.toList());
         return ResponseEntity.ok().body(ErrorDetails.builder()
                 .status(OK)
                 .fieldErrors(fieldErrors)
@@ -60,7 +59,7 @@ public class CommonAdviceController extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<ApiValidationError> fieldErrors = ex.getBindingResult()
                 .getFieldErrors().stream()
-                .map(fieldError -> builder().field(fieldError.getField()).message(fieldError.getDefaultMessage()).object(fieldError.getObjectName()).rejectedValue(fieldError.getRejectedValue()).build()).collect(Collectors.toList());
+                .map(fieldError -> ApiValidationError.builder().field(fieldError.getField()).message(fieldError.getDefaultMessage()).object(fieldError.getObjectName()).rejectedValue(fieldError.getRejectedValue()).build()).collect(Collectors.toList());
         return ResponseEntity.ok().body(ErrorDetails.builder()
                 .status(OK)
                 .fieldErrors(fieldErrors)
