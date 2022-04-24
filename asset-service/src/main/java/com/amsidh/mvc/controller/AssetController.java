@@ -2,6 +2,7 @@ package com.amsidh.mvc.controller;
 
 import com.amsidh.mvc.model.request.asset.AssetRequest;
 import com.amsidh.mvc.model.request.asset.UpdateAssetRequest;
+import com.amsidh.mvc.model.response.BaseResponse;
 import com.amsidh.mvc.model.response.asset.AssetResponse;
 import com.amsidh.mvc.service.AssetService;
 import com.google.gson.Gson;
@@ -21,42 +22,42 @@ public class AssetController {
     private final Gson gson;
 
     @PostMapping
-    public AssetResponse saveAsset(@Valid @RequestBody AssetRequest assetRequest) {
+    public BaseResponse saveAsset(@Valid @RequestBody AssetRequest assetRequest) {
         log.info("Request received to save an asset with {}", gson.toJson(assetRequest));
         AssetResponse assetResponse = assetService.saveAsset(assetRequest);
         log.info("Returning response for save asset {}", gson.toJson(assetRequest));
-        return assetResponse;
+        return BaseResponse.builder().data(assetResponse).build();
     }
 
     @GetMapping("/{assetId}")
-    public AssetResponse getAssetById(@PathVariable Integer assetId) {
+    public BaseResponse getAssetById(@PathVariable Integer assetId) {
         log.info("Received request to get Asset by assetId {}", assetId);
-        AssetResponse asset = assetService.getAssetById(assetId);
-        log.info("Returning response with asset details {}", gson.toJson(asset));
-        return asset;
+        AssetResponse assetResponse = assetService.getAssetById(assetId);
+        log.info("Returning response with asset details {}", gson.toJson(assetResponse));
+        return BaseResponse.builder().data(assetResponse).build();
     }
 
     @PatchMapping("/{assetId}")
-    public AssetResponse updateAssetById(@PathVariable Integer assetId, @RequestBody UpdateAssetRequest updateAssetRequest) {
+    public BaseResponse updateAssetById(@PathVariable Integer assetId, @RequestBody UpdateAssetRequest updateAssetRequest) {
         log.info("Received request to update Asset by assetId {} and asset details {}", assetId, gson.toJson(updateAssetRequest));
-        AssetResponse asset = assetService.updateAsset(assetId, updateAssetRequest);
-        log.info("Returning response after updating asset {}", gson.toJson(asset));
-        return asset;
+        AssetResponse assetResponse = assetService.updateAsset(assetId, updateAssetRequest);
+        log.info("Returning response after updating asset {}", gson.toJson(assetResponse));
+        return BaseResponse.builder().data(assetResponse).build();
     }
 
     @DeleteMapping("/{assetId}")
-    public String deleteAssetById(@PathVariable Integer assetId) {
+    public BaseResponse deleteAssetById(@PathVariable Integer assetId) {
         log.info("Received request to delete Asset by assetId {}", assetId);
         assetService.deleteAssetById(assetId);
         log.info("Asset with assetId %d deleted successfully", assetId);
-        return String.format("Asset with assetId %d deleted successfully", assetId);
+        return BaseResponse.builder().data(String.format("Asset with assetId %d deleted successfully", assetId)).build();
     }
 
     @GetMapping
-    public List<AssetResponse> getAllAsset() {
+    public BaseResponse getAllAsset() {
         log.info("Request received to get all Asset");
         List<AssetResponse> assetResponses = assetService.findAllAssets();
         log.info("Returning assets response {}", gson.toJson(assetResponses));
-        return assetResponses;
+        return BaseResponse.builder().data(assetResponses).build();
     }
 }

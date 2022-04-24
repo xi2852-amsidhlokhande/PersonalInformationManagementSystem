@@ -38,12 +38,12 @@ public class AccountServiceApplication implements CommandLineRunner {
 		accountRepository.deleteAll();
 		log.info("Initializing account database");
 		List<Account> accounts = Arrays.asList(
-				AccountRequest.builder().accountId(1).accountName("Saving Account").balance(100d).build(),
-				AccountRequest.builder().accountId(2).accountName("Credit Account").balance(145d).build(),
-				AccountRequest.builder().accountId(3).accountName("Debit Account").balance(985d).build(),
-				AccountRequest.builder().accountId(4).accountName("Home Loan Account").balance(19500d).build(),
-				AccountRequest.builder().accountId(5).accountName("Car Account").balance(10d).build(),
-				AccountRequest.builder().accountId(6).accountName("Two Wheeler Account").balance(9850d).build()
+				AccountRequest.builder().accountId(1).accountName("Saving Account").accountBalance(100d).build(),
+				AccountRequest.builder().accountId(2).accountName("Credit Account").accountBalance(145d).build(),
+				AccountRequest.builder().accountId(3).accountName("Debit Account").accountBalance(985d).build(),
+				AccountRequest.builder().accountId(4).accountName("Home Loan Account").accountBalance(19500d).build(),
+				AccountRequest.builder().accountId(5).accountName("Car Account").accountBalance(10d).build(),
+				AccountRequest.builder().accountId(6).accountName("Two Wheeler Account").accountBalance(9850d).build()
 		).stream().map(accountRequest -> objectMapper.convertValue(accountRequest, Account.class)).collect(Collectors.toList());
 		List<Account> savedAccount = accountRepository.saveAll(accounts);
 		log.info("Database loaded with account {}", gson.toJson(savedAccount));

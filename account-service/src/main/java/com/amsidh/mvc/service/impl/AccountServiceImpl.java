@@ -34,7 +34,7 @@ public class AccountServiceImpl implements AccountService {
         log.info("Updating account by accountId {}", accountId);
         Account updatedAccount = accountRepository.findById(accountId).map(account -> {
             Optional.ofNullable(updateAccountRequest.getAccountName()).ifPresent(account::setAccountName);
-            Optional.ofNullable(updateAccountRequest.getBalance()).ifPresent(account::setBalance);
+            Optional.ofNullable(updateAccountRequest.getBalance()).ifPresent(account::setAccountBalance);
             return accountRepository.save(account);
         }).orElseThrow(() -> new AccountDataNotFoundException(String.format("Account with accountId %d not found", accountId)));
         return objectMapper.convertValue(updatedAccount, AccountResponse.class);

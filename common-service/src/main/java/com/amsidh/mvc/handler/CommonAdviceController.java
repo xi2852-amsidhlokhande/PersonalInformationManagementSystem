@@ -2,7 +2,9 @@ package com.amsidh.mvc.handler;
 
 import com.amsidh.mvc.handler.exception.DataNotFoundException;
 import com.amsidh.mvc.model.response.ApiValidationError;
+import com.amsidh.mvc.model.response.BaseResponse;
 import com.amsidh.mvc.model.response.ErrorDetails;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,19 +29,21 @@ import static org.springframework.http.HttpStatus.OK;
 @RequiredArgsConstructor
 public class CommonAdviceController extends ResponseEntityExceptionHandler {
 
+    private final Gson gson;
+
     @ExceptionHandler(value = {DataNotFoundException.class})
     @ResponseStatus(OK)
-    public ErrorDetails handleDataNotFoundException(DataNotFoundException dataNotFoundException) {
-        return ERRORS.get(dataNotFoundException.getMessage());
+    public ResponseEntity<BaseResponse> handleDataNotFoundException(DataNotFoundException dataNotFoundException) {
+        return ResponseEntity.ok(BaseResponse.builder().errorDetails(ERRORS.get(dataNotFoundException.getMessage())).build());
     }
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return ResponseEntity.badRequest().body(ErrorDetails.builder()
+        return ResponseEntity.badRequest().body(BaseResponse.builder().errorDetails(ErrorDetails.builder()
                 .status(BAD_REQUEST)
                 .message(ex.getLocalizedMessage())
                 .code("0003")
-                .build());
+                .build()));
     }
 
     @Override
@@ -48,11 +52,11 @@ public class CommonAdviceController extends ResponseEntityExceptionHandler {
                 .getFieldErrors().stream()
                 .map(fieldError -> ApiValidationError.builder().field(fieldError.getField()).message(fieldError.getDefaultMessage()).object(fieldError.getObjectName()).rejectedValue(fieldError.getRejectedValue()).build())
                 .collect(Collectors.toList());
-        return ResponseEntity.ok().body(ErrorDetails.builder()
+        return ResponseEntity.ok().body(BaseResponse.builder().errorDetails(ErrorDetails.builder()
                 .status(OK)
                 .fieldErrors(fieldErrors)
                 .code("0003")
-                .build());
+                .build()));
     }
 
     @Override
@@ -60,19 +64,19 @@ public class CommonAdviceController extends ResponseEntityExceptionHandler {
         List<ApiValidationError> fieldErrors = ex.getBindingResult()
                 .getFieldErrors().stream()
                 .map(fieldError -> ApiValidationError.builder().field(fieldError.getField()).message(fieldError.getDefaultMessage()).object(fieldError.getObjectName()).rejectedValue(fieldError.getRejectedValue()).build()).collect(Collectors.toList());
-        return ResponseEntity.ok().body(ErrorDetails.builder()
+        return ResponseEntity.ok().body(BaseResponse.builder().errorDetails(ErrorDetails.builder()
                 .status(OK)
                 .fieldErrors(fieldErrors)
                 .code("0003")
-                .build());
+                .build()));
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return ResponseEntity.badRequest().body(ErrorDetails.builder()
+        return ResponseEntity.badRequest().body(BaseResponse.builder().errorDetails(ErrorDetails.builder()
                 .status(BAD_REQUEST)
                 .message(ex.getMessage())
                 .code("0002")
-                .build());
+                .build()));
     }
 }

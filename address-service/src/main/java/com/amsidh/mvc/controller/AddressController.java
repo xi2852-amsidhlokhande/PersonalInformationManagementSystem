@@ -2,6 +2,7 @@ package com.amsidh.mvc.controller;
 
 import com.amsidh.mvc.model.request.address.AddressRequest;
 import com.amsidh.mvc.model.request.address.UpdateAddressRequest;
+import com.amsidh.mvc.model.response.BaseResponse;
 import com.amsidh.mvc.model.response.address.AddressResponse;
 import com.amsidh.mvc.service.AddressService;
 import com.google.gson.Gson;
@@ -22,45 +23,45 @@ public class AddressController {
 	private final Gson gson;
 
 	@PostMapping
-	public AddressResponse saveAddress(@Valid @RequestBody AddressRequest addressRequest) {
+	public BaseResponse saveAddress(@Valid @RequestBody AddressRequest addressRequest) {
 		log.info("Request received to save address with address {}", gson.toJson(addressRequest));
 		AddressResponse addressResponse = addressService.saveAddress(addressRequest);
 		log.info("Returning response after saving address {}", gson.toJson(addressResponse));
-		return addressResponse;
+		return BaseResponse.builder().data(addressResponse).build();
 	}
 
 	@PatchMapping("/{addressId}")
-	public AddressResponse updateAddress(@PathVariable Integer addressId,
-										 @Valid @RequestBody UpdateAddressRequest updateAddressRequest) {
+	public BaseResponse updateAddress(@PathVariable Integer addressId,
+									  @Valid @RequestBody UpdateAddressRequest updateAddressRequest) {
 		log.info("Request received to update an address with addressId {} and address {}", addressId,
 				gson.toJson(updateAddressRequest));
 		AddressResponse addressResponse = addressService.updateAddress(addressId, updateAddressRequest);
 		log.info("Returning response after updating address {}", gson.toJson(addressResponse));
-		return addressResponse;
+		return BaseResponse.builder().data(addressResponse).build();
 	}
 
 	@GetMapping("/{addressId}")
-	public AddressResponse getAddressById(@PathVariable Integer addressId) {
+	public BaseResponse getAddressById(@PathVariable Integer addressId) {
 		log.info("Request received to get an address by addressId {} ", addressId);
 		AddressResponse addressResponse = addressService.findByAddressId(addressId);
 		log.info("Returning response after getting an address {}", gson.toJson(addressResponse));
-		return addressResponse;
+		return BaseResponse.builder().data(addressResponse).build();
 	}
 
 	@DeleteMapping("/{addressId}")
-	public String deleteAddressById(@PathVariable Integer addressId) {
+	public BaseResponse deleteAddressById(@PathVariable Integer addressId) {
 		log.info("Request received to delete an address by addressId {} ", addressId);
 		addressService.deleteAddress(addressId);
 		log.info("Address with addressId {} deleted successfully", addressId);
-		return String.format("Address with addressId %d deleted successfully", addressId);
+		return BaseResponse.builder().data(String.format("Address with addressId %d deleted successfully", addressId)).build();
 	}
 
 	@GetMapping
-	public List<AddressResponse> getAllAddress() {
+	public BaseResponse getAllAddress() {
 		log.info("Request received to get all addresses");
 		List<AddressResponse> addresses = addressService.getAllAddress();
 		log.info("Returning response after getting an all address {}", gson.toJson(addresses));
-		return addresses;
+		return BaseResponse.builder().data(addresses).build();
 	}
 
 }

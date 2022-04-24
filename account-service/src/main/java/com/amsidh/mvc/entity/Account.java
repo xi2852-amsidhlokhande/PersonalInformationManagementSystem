@@ -18,5 +18,5 @@ public class Account implements Serializable {
     @Id
     private Integer accountId;
     private String accountName;
-    private Double balance;
+    private Double accountBalance;
 }

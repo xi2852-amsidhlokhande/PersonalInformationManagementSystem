@@ -4,18 +4,22 @@ import com.amsidh.mvc.client.AccountServiceFeignClient;
 import com.amsidh.mvc.client.AddressServiceFeignClient;
 import com.amsidh.mvc.model.request.person.PersonRequest;
 import com.amsidh.mvc.model.request.person.UpdatePersonRequest;
+import com.amsidh.mvc.model.response.BaseResponse;
 import com.amsidh.mvc.model.response.account.AccountResponse;
 import com.amsidh.mvc.model.response.address.AddressResponse;
 import com.amsidh.mvc.model.response.person.PersonResponse;
 import com.amsidh.mvc.service.PersonService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.StringReader;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/persons")
@@ -30,46 +34,64 @@ public class PersonController {
     private final AccountServiceFeignClient accountServiceFeignClient;
 
     @PostMapping
-    public PersonResponse savePerson(@Valid @RequestBody PersonRequest personRequest) {
+    public BaseResponse savePerson(@Valid @RequestBody PersonRequest personRequest) {
         log.info("Request received for saving person {}", gson.toJson(personRequest));
         PersonResponse personResponse = personService.savePerson(personRequest);
         log.info("Returning response after saving the person {}", gson.toJson(personResponse));
-        return personResponse;
+        return BaseResponse.builder().data(personResponse).build();
     }
 
     @PatchMapping("/{personId}")
-    public PersonResponse updatePersonById(@PathVariable Integer personId, @RequestBody UpdatePersonRequest updatePersonRequest) {
+    public BaseResponse updatePersonById(@PathVariable Integer personId, @RequestBody UpdatePersonRequest updatePersonRequest) {
         log.info("Request received for update person by personId {} and person details {}", personId, gson.toJson(updatePersonRequest));
         PersonResponse personResponse = personService.updatePersonResponse(personId, updatePersonRequest);
         log.info("Returning response after updating Person by personId {}", gson.toJson(personResponse));
-        return personResponse;
+        return BaseResponse.builder().data(personResponse).build();
     }
 
     @GetMapping("/{personId}")
-    public PersonResponse findPersonById(@PathVariable Integer personId) {
+    public BaseResponse findPersonById(@PathVariable Integer personId) {
         log.info("Request received for getting person by personId {}", personId);
         PersonResponse personResponse = personService.findPersonById(personId);
+
+        log.info("Calling Address-Service");
+        BaseResponse addressBaseResponse = this.addressServiceFeignClient.getAddressByAddressId(1);
+        Optional.ofNullable(addressBaseResponse.getData()).ifPresent(data -> {
+            AddressResponse addressResponse = gson.fromJson(data.toString(), AddressResponse.class);
+            log.info("Response received from Address-Service {}", gson.toJson(addressResponse));
+        });
+        Optional.ofNullable(addressBaseResponse.getErrorDetails()).ifPresent(errorDetails -> {
+            log.info("Response received from Address-Service {}", gson.toJson(errorDetails));
+        });
+        /*log.info("Calling Account-Service");
+        BaseResponse accountBaseResponse = this.accountServiceFeignClient.getAccountByAccountId(1);
+        Optional.ofNullable(accountBaseResponse.getData()).ifPresent(accountData -> {
+            JsonReader reader = new JsonReader(new StringReader(accountData.toString()));
+            reader.setLenient(true);
+            AccountResponse accountResponse = gson.fromJson(reader, AccountResponse.class);
+            log.info("Response received from Account-Service {}", gson.toJson(accountResponse));
+        });
+        Optional.ofNullable(accountBaseResponse.getErrorDetails()).ifPresent(errorDetails -> {
+            log.info("Response received from Account-Service {}", gson.toJson(errorDetails));
+        });*/
+
         log.info("Returning response for get Person by personId {}", gson.toJson(personResponse));
-        AddressResponse address = this.addressServiceFeignClient.getAddressByAddressId(1);
-        log.info("Response received from Address-Service {}", gson.toJson(address));
-        AccountResponse account = this.accountServiceFeignClient.getAccountByAccountId(1);
-        log.info("Response received from Account-Service {}", gson.toJson(account));
-        return personResponse;
+        return BaseResponse.builder().data(personResponse).build();
     }
 
     @DeleteMapping("/{personId}")
-    public String deletePersonById(@PathVariable Integer personId) {
+    public BaseResponse deletePersonById(@PathVariable Integer personId) {
         log.info("Request received for deleting person by personId {}", personId);
         personService.deletePersonById(personId);
         log.info("Person with personId {} deleted successfully", personId);
-        return String.format("Person with personId %d deleted successfully", personId);
+        return BaseResponse.builder().data(String.format("Person with personId %d deleted successfully", personId)).build();
     }
 
     @GetMapping
-    public List<PersonResponse> getAllPersons() {
+    public BaseResponse getAllPersons() {
         log.info("Request received tp get all persons");
         List<PersonResponse> personResponses = personService.getAllPerson();
         log.info("Returning response for get all Person {}", gson.toJson(personResponses));
-        return personResponses;
+        return BaseResponse.builder().data(personResponses).build();
     }
 }

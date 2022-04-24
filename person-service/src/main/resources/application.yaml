@@ -22,3 +22,35 @@ spring:
     driver-class-name: org.h2.Driver
 account_service_url: http://localhost:8082/account-service/accounts
 address_service_url: http://localhost:8083/address-service/addresses
+
+---
+spring:
+  profiles: uat
+  jpa:
+    database: h2
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:h2:file:E:/workspaces/Gitxi2852Projects/person-management-system/h2/person_db_uat
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+account_service_url: http://localhost:8082/account-service/accounts
+address_service_url: http://localhost:8083/address-service/addresses
+
+---
+spring:
+  profiles: prod
+  jpa:
+    database: h2
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:h2:file:E:/workspaces/Gitxi2852Projects/person-management-system/h2/person_db_prod
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+account_service_url: http://localhost:8082/account-service/accounts
+address_service_url: http://localhost:8083/address-service/addresses

@@ -14,5 +14,5 @@ import java.io.Serializable;
 public class AccountResponse implements Serializable {
     private Integer accountId;
     private String accountName;
-    private Double balance;
+    private Double accountBalance;
 }
