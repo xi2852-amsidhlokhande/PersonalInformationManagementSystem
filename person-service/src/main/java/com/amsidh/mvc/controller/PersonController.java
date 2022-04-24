@@ -1,7 +1,11 @@
 package com.amsidh.mvc.controller;
 
+import com.amsidh.mvc.client.AccountServiceFeignClient;
+import com.amsidh.mvc.client.AddressServiceFeignClient;
 import com.amsidh.mvc.model.request.person.PersonRequest;
 import com.amsidh.mvc.model.request.person.UpdatePersonRequest;
+import com.amsidh.mvc.model.response.account.AccountResponse;
+import com.amsidh.mvc.model.response.address.AddressResponse;
 import com.amsidh.mvc.model.response.person.PersonResponse;
 import com.amsidh.mvc.service.PersonService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +25,9 @@ public class PersonController {
     private final PersonService personService;
     private final ObjectMapper objectMapper;
     private final Gson gson;
+
+    private final AddressServiceFeignClient addressServiceFeignClient;
+    private final AccountServiceFeignClient accountServiceFeignClient;
 
     @PostMapping
     public PersonResponse savePerson(@Valid @RequestBody PersonRequest personRequest) {
@@ -43,6 +50,10 @@ public class PersonController {
         log.info("Request received for getting person by personId {}", personId);
         PersonResponse personResponse = personService.findPersonById(personId);
         log.info("Returning response for get Person by personId {}", gson.toJson(personResponse));
+        AddressResponse address = this.addressServiceFeignClient.getAddressByAddressId(1);
+        log.info("Response received from Address-Service {}", gson.toJson(address));
+        AccountResponse account = this.accountServiceFeignClient.getAccountByAccountId(1);
+        log.info("Response received from Account-Service {}", gson.toJson(account));
         return personResponse;
     }
 

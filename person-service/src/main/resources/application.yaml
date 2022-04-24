@@ -1,9 +1,15 @@
 server:
-  port: ${PERSON_SERVICE_PORT:8080}
+  port: ${PERSON_SERVICE_PORT:8081}
   servlet:
     context-path: /person-service
-
 spring:
+  profiles:
+    include:
+      - common
+    active: dev
+---
+spring:
+  profiles: dev
   jpa:
     database: h2
     show-sql: true
@@ -14,29 +20,5 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-application:
-  errors:
-    # Common Error Code Configuration
-    internal_server_error:
-      code: 500
-      message: Internal server error
-    data_access_exception:
-      code: 501
-      message: Database is down or not available
-    # Person-Service Error Code Configuration
-
-    person_not_found:
-      code: PERSON_NOT_FOUND
-      message: Person with personId {0} not found
-    # Asset-Service Error Code Configuration
-    asset_not_found:
-      code: ASSET_NOT_FOUND
-      message: Asset with assetId {0} not found
-    # Address-Service Error Code Configuration
-    address_not_found:
-      code: ADDRESS_NOT_FOUND
-      message: Address with addressId {0} not found
-    # Account-Service Error Code Configuration
-    account_not_found:
-      code: ACCOUNT_NOT_FOUND
-      message: Address with accountId {0} not found
+account_service_url: http://localhost:8082/account-service/accounts
+address_service_url: http://localhost:8083/address-service/addresses
