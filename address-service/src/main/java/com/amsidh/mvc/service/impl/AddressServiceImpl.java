@@ -1,7 +1,7 @@
 package com.amsidh.mvc.service.impl;
 
 import com.amsidh.mvc.entity.Address;
-import com.amsidh.mvc.exception.AddressNotFoundException;
+import com.amsidh.mvc.handler.exception.AddressDataNotFoundException;
 import com.amsidh.mvc.model.request.address.AddressRequest;
 import com.amsidh.mvc.model.request.address.UpdateAddressRequest;
 import com.amsidh.mvc.model.response.address.AddressResponse;
@@ -38,20 +38,20 @@ public class AddressServiceImpl implements AddressService {
             Optional.ofNullable(updateAddressRequest.getState()).ifPresent(oldAddress::setState);
             Optional.ofNullable(updateAddressRequest.getPinCode()).ifPresent(oldAddress::setPinCode);
             return objectMapper.convertValue(addressRepository.save(oldAddress), AddressResponse.class);
-        }).orElseThrow(() -> new AddressNotFoundException(String.format("Address with addressId %d not found", addressId)));
+        }).orElseThrow(() -> new AddressDataNotFoundException(String.format("Address with addressId %d not found", addressId)));
     }
 
     @Override
     public AddressResponse findByAddressId(Integer addressId) {
         log.info("Finding address by id" + addressId);
-        Address address = addressRepository.findById(addressId).orElseThrow(() -> new AddressNotFoundException(String.format("Address with addressId %d not found", addressId)));
+        Address address = addressRepository.findById(addressId).orElseThrow(() -> new AddressDataNotFoundException(String.format("Address with addressId %d not found", addressId)));
         return objectMapper.convertValue(address, AddressResponse.class);
     }
 
     @Override
     public void deleteAddress(Integer addressId) {
         log.info("Deleting address by id" + addressId);
-        Address address = addressRepository.findById(addressId).orElseThrow(() -> new AddressNotFoundException(String.format("Address with addressId %d not found", addressId)));
+        Address address = addressRepository.findById(addressId).orElseThrow(() -> new AddressDataNotFoundException(String.format("Address with addressId %d not found", addressId)));
         addressRepository.delete(address);
         return;
     }

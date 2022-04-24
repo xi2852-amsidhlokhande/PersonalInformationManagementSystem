@@ -1,7 +1,7 @@
 package com.amsidh.mvc.service.impl;
 
 import com.amsidh.mvc.entity.Person;
-import com.amsidh.mvc.exception.PersonNotFoundException;
+import com.amsidh.mvc.handler.exception.PersonDataNotFoundException;
 import com.amsidh.mvc.model.request.person.PersonRequest;
 import com.amsidh.mvc.model.request.person.UpdatePersonRequest;
 import com.amsidh.mvc.model.response.person.PersonResponse;
@@ -38,13 +38,13 @@ public class PersonServiceImpl implements PersonService {
             Optional.ofNullable(updatePersonRequest.getGender()).ifPresent(person::setGender);
             Optional.ofNullable(updatePersonRequest.getMobileNumber()).ifPresent(person::setMobileNumber);
             return objectMapper.convertValue(personRepository.save(person), PersonResponse.class);
-        }).orElseThrow(() -> new PersonNotFoundException(String.format("Person with personId %d not found", personId)));
+        }).orElseThrow(() -> new PersonDataNotFoundException("person_not_found", personId));
     }
 
     @Override
     public PersonResponse findPersonById(Integer personId) {
         log.info("Getting person with personId {}", personId);
-        return objectMapper.convertValue(personRepository.findById(personId).orElseThrow(() -> new PersonNotFoundException(String.format("Person with personId %d not found", personId))), PersonResponse.class);
+        return objectMapper.convertValue(personRepository.findById(personId).orElseThrow(() -> new PersonDataNotFoundException("person_not_found", personId)), PersonResponse.class);
     }
 
     @Override

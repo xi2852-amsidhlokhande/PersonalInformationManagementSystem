@@ -1,7 +1,7 @@
 package com.amsidh.mvc.service.impl;
 
 import com.amsidh.mvc.entity.Asset;
-import com.amsidh.mvc.exception.AssetNotFoundException;
+import com.amsidh.mvc.handler.exception.AssetDataNotFoundException;
 import com.amsidh.mvc.model.request.asset.AssetRequest;
 import com.amsidh.mvc.model.request.asset.UpdateAssetRequest;
 import com.amsidh.mvc.model.response.asset.AssetResponse;
@@ -37,7 +37,7 @@ public class AssetServiceImpl implements AssetService {
             Optional.ofNullable(updateAssetRequest.getAssetType()).ifPresent(asset::setAssetType);
             Optional.ofNullable(updateAssetRequest.getAssetValue()).ifPresent(asset::setAssetValue);
             return assetRepository.save(asset);
-        }).map(updatedAsset -> objectMapper.convertValue(updatedAsset, AssetResponse.class)).orElseThrow(() -> new AssetNotFoundException(String.format("Asset with assetId %d not found", assetId)));
+        }).map(updatedAsset -> objectMapper.convertValue(updatedAsset, AssetResponse.class)).orElseThrow(() -> new AssetDataNotFoundException(String.format("Asset with assetId %d not found", assetId)));
         log.info("Asset updated successfully");
         return assetResponse;
     }
@@ -45,7 +45,7 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public AssetResponse getAssetById(Integer assetId) {
         log.info("Getting asset with assetId {}", assetId);
-        return assetRepository.findById(assetId).map(asset -> objectMapper.convertValue(asset, AssetResponse.class)).orElseThrow(() -> new AssetNotFoundException(String.format("Asset with assetId %d not found", assetId)));
+        return assetRepository.findById(assetId).map(asset -> objectMapper.convertValue(asset, AssetResponse.class)).orElseThrow(() -> new AssetDataNotFoundException(String.format("Asset with assetId %d not found", assetId)));
     }
 
     @Override

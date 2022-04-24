@@ -1,7 +1,7 @@
 package com.amsidh.mvc.service.impl;
 
 import com.amsidh.mvc.entity.Account;
-import com.amsidh.mvc.exception.AccountNotFoundException;
+import com.amsidh.mvc.handler.exception.AccountDataNotFoundException;
 import com.amsidh.mvc.model.request.account.AccountRequest;
 import com.amsidh.mvc.model.request.account.UpdateAccountRequest;
 import com.amsidh.mvc.model.response.account.AccountResponse;
@@ -36,14 +36,14 @@ public class AccountServiceImpl implements AccountService {
             Optional.ofNullable(updateAccountRequest.getAccountName()).ifPresent(account::setAccountName);
             Optional.ofNullable(updateAccountRequest.getBalance()).ifPresent(account::setBalance);
             return accountRepository.save(account);
-        }).orElseThrow(() -> new AccountNotFoundException(String.format("Account with accountId %d not found", accountId)));
+        }).orElseThrow(() -> new AccountDataNotFoundException(String.format("Account with accountId %d not found", accountId)));
         return objectMapper.convertValue(updatedAccount, AccountResponse.class);
     }
 
     @Override
     public AccountResponse findByAccountId(Integer accountId) {
         log.info("Getting account by accountId {}", accountId);
-        return objectMapper.convertValue(accountRepository.findById(accountId).orElseThrow(() -> new AccountNotFoundException(String.format("Account with accountId %d not found", accountId))), AccountResponse.class);
+        return objectMapper.convertValue(accountRepository.findById(accountId).orElseThrow(() -> new AccountDataNotFoundException(String.format("Account with accountId %d not found", accountId))), AccountResponse.class);
     }
 
     @Override
