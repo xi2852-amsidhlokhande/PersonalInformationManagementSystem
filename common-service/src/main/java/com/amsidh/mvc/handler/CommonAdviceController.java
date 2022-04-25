@@ -4,7 +4,6 @@ import com.amsidh.mvc.handler.exception.DataNotFoundException;
 import com.amsidh.mvc.model.response.ApiValidationError;
 import com.amsidh.mvc.model.response.BaseResponse;
 import com.amsidh.mvc.model.response.ErrorDetails;
-import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,8 +28,6 @@ import static org.springframework.http.HttpStatus.OK;
 @RequiredArgsConstructor
 public class CommonAdviceController extends ResponseEntityExceptionHandler {
 
-    private final Gson gson;
-
     @ExceptionHandler(value = {DataNotFoundException.class})
     @ResponseStatus(OK)
     public ResponseEntity<BaseResponse> handleDataNotFoundException(DataNotFoundException dataNotFoundException) {
@@ -43,7 +40,7 @@ public class CommonAdviceController extends ResponseEntityExceptionHandler {
                 .status(BAD_REQUEST)
                 .message(ex.getLocalizedMessage())
                 .code("0003")
-                .build()));
+                .build()).build());
     }
 
     @Override
@@ -56,7 +53,7 @@ public class CommonAdviceController extends ResponseEntityExceptionHandler {
                 .status(OK)
                 .fieldErrors(fieldErrors)
                 .code("0003")
-                .build()));
+                .build()).build());
     }
 
     @Override
@@ -68,7 +65,7 @@ public class CommonAdviceController extends ResponseEntityExceptionHandler {
                 .status(OK)
                 .fieldErrors(fieldErrors)
                 .code("0003")
-                .build()));
+                .build()).build());
     }
 
     @Override
@@ -77,6 +74,6 @@ public class CommonAdviceController extends ResponseEntityExceptionHandler {
                 .status(BAD_REQUEST)
                 .message(ex.getMessage())
                 .code("0002")
-                .build()));
+                .build()).build());
     }
 }
