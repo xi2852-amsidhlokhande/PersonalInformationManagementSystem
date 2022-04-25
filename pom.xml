@@ -103,12 +103,10 @@
     </build>
     <modules>
         <module>common-service</module>
-        <module>person-service</module>
+        <module>address-service</module>
         <module>asset-service</module>
         <module>account-service</module>
-        <module>address-service</module>
+        <module>person-service</module>
 
     </modules>
-    <profiles></profiles>
-
 </project>

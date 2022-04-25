@@ -9,7 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UpdatePersonRequest extends BaseRequest {
-    private Integer personId;
     private String personName;
     private String gender;
     private String mobileNumber;

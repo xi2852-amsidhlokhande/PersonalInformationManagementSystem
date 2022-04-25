@@ -14,6 +14,9 @@ import javax.validation.constraints.Size;
 public class AccountRequest extends BaseRequest {
     @NotNull(message = "AccountId is required")
     private Integer accountId;
+    @NotNull(message = "PersonId is required")
+    private Integer personId;
+
     @Size(min = 2, max = 30, message = "Account name must be 2 to 30 character in size")
     private String accountName;
     private Double accountBalance;

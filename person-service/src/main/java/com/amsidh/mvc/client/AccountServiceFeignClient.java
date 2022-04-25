@@ -10,4 +10,7 @@ public interface AccountServiceFeignClient {
 
     @GetMapping("/{accountId}")
     BaseResponse getAccountByAccountId(@PathVariable Integer accountId);
+
+    @GetMapping("/person/{personId}")
+    BaseResponse getAllAccountByPersonId(@PathVariable Integer personId);
 }

@@ -13,6 +13,7 @@ import java.io.Serializable;
 @Builder
 public class AccountResponse implements Serializable {
     private Integer accountId;
+    private Integer personId;
     private String accountName;
     private Double accountBalance;
 }

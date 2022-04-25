@@ -77,4 +77,12 @@ public class AccountController {
         log.info("Returning response with all account", gson.toJson(accounts));
         return BaseResponse.builder().data(accounts).build();
     }
+
+    @GetMapping("/person/{personId}")
+    public BaseResponse getAccountsByPersonId(@PathVariable Integer personId) {
+        log.info("Request received for getting all accounts by personId {}", personId);
+        List<AccountResponse> accountResponses = accountService.getAllAccountsByPersonId(personId);
+        log.info("Returning response with all account", gson.toJson(accountResponses));
+        return BaseResponse.builder().data(accountResponses).build();
+    }
 }

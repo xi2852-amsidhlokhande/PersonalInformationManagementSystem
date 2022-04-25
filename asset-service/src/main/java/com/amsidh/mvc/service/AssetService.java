@@ -16,4 +16,5 @@ public interface AssetService {
      void deleteAssetById(Integer assetId);
 
      List<AssetResponse> findAllAssets();
+     List<AssetResponse> getAllAssetByPersonId(Integer personId);
 }

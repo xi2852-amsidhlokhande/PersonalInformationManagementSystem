@@ -61,4 +61,10 @@ public class AssetServiceImpl implements AssetService {
         return objectMapper.convertValue(assetRepository.findAll(), new TypeReference<>() {
         });
     }
+
+    @Override
+    public List<AssetResponse> getAllAssetByPersonId(Integer personId) {
+        return objectMapper.convertValue(assetRepository.findByPersonId(personId), new TypeReference<>() {
+        });
+    }
 }

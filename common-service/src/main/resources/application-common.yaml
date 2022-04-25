@@ -7,6 +7,10 @@ application:
     data_access_exception:
       code: 501
       message: Database is down or not available
+    data_not_found:
+      code: DATA_NOT_FOUND
+      message: No data found for given criteria
+
     # Person-Service Error Code Configuration
 
     person_not_found:

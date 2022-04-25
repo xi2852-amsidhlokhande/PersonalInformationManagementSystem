@@ -9,4 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface AssetServiceFeignClient {
     @GetMapping("/{assetId}")
     BaseResponse getAssetByAssetId(@PathVariable Integer assetId);
+
+    @GetMapping("/person/{personId}")
+    BaseResponse getAllAssetByPersonId(@PathVariable Integer personId);
 }

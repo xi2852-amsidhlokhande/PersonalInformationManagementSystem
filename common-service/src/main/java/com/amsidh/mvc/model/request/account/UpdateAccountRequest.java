@@ -9,7 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UpdateAccountRequest extends BaseRequest {
-    private Integer accountId;
     private String accountName;
     private Double balance;
 }

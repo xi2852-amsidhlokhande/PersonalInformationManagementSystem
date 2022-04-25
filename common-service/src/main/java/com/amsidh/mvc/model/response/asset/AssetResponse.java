@@ -13,6 +13,7 @@ import java.io.Serializable;
 @Builder
 public class AssetResponse implements Serializable {
     private Integer assetId;
+    private Integer personId;
     private String assetName;
     private String assetType;
     private Double assetValue;

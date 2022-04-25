@@ -60,4 +60,12 @@ public class AssetController {
         log.info("Returning assets response {}", gson.toJson(assetResponses));
         return BaseResponse.builder().data(assetResponses).build();
     }
+
+    @GetMapping("/person/{personId}")
+    public BaseResponse getAssetByPersonId(@PathVariable Integer personId) {
+        log.info("Received request to get all Assets by personId {}", personId);
+        List<AssetResponse> assetResponses = assetService.getAllAssetByPersonId(personId);
+        log.info("Returning response with asset details {}", gson.toJson(assetResponses));
+        return BaseResponse.builder().data(assetResponses).build();
+    }
 }

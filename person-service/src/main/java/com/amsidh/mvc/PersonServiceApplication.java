@@ -3,6 +3,7 @@ package com.amsidh.mvc;
 import com.amsidh.mvc.entity.Person;
 import com.amsidh.mvc.model.request.person.PersonRequest;
 import com.amsidh.mvc.repository.PersonRepository;
+import com.amsidh.mvc.scheduler.CustomerBalanceScheduler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,12 +20,15 @@ import java.util.stream.Stream;
 @SpringBootApplication
 @Slf4j
 @EnableFeignClients
+@EnableScheduling
 public class PersonServiceApplication implements CommandLineRunner {
 
 	@Autowired
 	private PersonRepository personRepository;
 	@Autowired
 	private ObjectMapper objectMapper;
+	@Autowired
+	private CustomerBalanceScheduler customerBalanceScheduler;
 
 	public static void main(String[] args) {
 		SpringApplication.run(PersonServiceApplication.class, args);
@@ -43,5 +48,7 @@ public class PersonServiceApplication implements CommandLineRunner {
 		).map(personRequest -> this.objectMapper.convertValue(personRequest, Person.class)).collect(Collectors.toList());
 		this.personRepository.saveAll(personList);
 		log.info("Person database loaded successfully");
+
+		customerBalanceScheduler.notifyCustomerBalance();
 	}
 }

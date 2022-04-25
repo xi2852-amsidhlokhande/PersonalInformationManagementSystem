@@ -14,6 +14,8 @@ import javax.validation.constraints.Size;
 public class AssetRequest extends BaseRequest {
     @NotNull(message = "AssertId is required")
     private Integer assetId;
+    @NotNull(message = "PersonId is required")
+    private Integer personId;
     @Size(min = 2, max = 20, message = "Asset Name must be in between 2 to 20 character in size")
     private String assetName;
     private String assetType;

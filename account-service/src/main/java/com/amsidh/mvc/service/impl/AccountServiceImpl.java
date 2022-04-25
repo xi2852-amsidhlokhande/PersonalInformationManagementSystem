@@ -2,6 +2,7 @@ package com.amsidh.mvc.service.impl;
 
 import com.amsidh.mvc.entity.Account;
 import com.amsidh.mvc.handler.exception.AccountDataNotFoundException;
+import com.amsidh.mvc.handler.exception.DataNotFoundException;
 import com.amsidh.mvc.model.request.account.AccountRequest;
 import com.amsidh.mvc.model.request.account.UpdateAccountRequest;
 import com.amsidh.mvc.model.response.account.AccountResponse;
@@ -56,6 +57,16 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<AccountResponse> getAllAccounts() {
         return objectMapper.convertValue(accountRepository.findAll(), new TypeReference<>() {
+        });
+    }
+
+    @Override
+    public List<AccountResponse> getAllAccountsByPersonId(Integer personId) {
+        List<Account> accountList = accountRepository.findByPersonId(personId);
+        if (accountList.isEmpty()) {
+            throw new DataNotFoundException("data_not_found");
+        }
+        return objectMapper.convertValue(accountList, new TypeReference<>() {
         });
     }
 }

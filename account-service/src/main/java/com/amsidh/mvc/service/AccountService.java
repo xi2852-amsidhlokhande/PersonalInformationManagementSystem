@@ -16,4 +16,6 @@ public interface AccountService {
     void deleteAccount(Integer accountId);
 
     List<AccountResponse> getAllAccounts();
+
+    List<AccountResponse> getAllAccountsByPersonId(Integer personId);
 }
