@@ -1,14 +1,15 @@
 package com.amsidh.mvc.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
@@ -16,12 +17,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class Account implements Serializable {
-    @Id
-    private Integer accountId;
-    @NotNull
-    private Integer personId;
-    @NotNull
-    private String accountName;
-    @NotNull
-    private Double accountBalance;
+	@Id
+	private Integer accountId;
+	@NotNull
+	private Integer personId;
+	@NotNull
+	private String accountName;
+	@NotNull
+	private Double accountBalance;
 }

@@ -1,17 +1,27 @@
 package com.amsidh.mvc.controller;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.amsidh.mvc.model.request.address.AddressRequest;
 import com.amsidh.mvc.model.request.address.UpdateAddressRequest;
 import com.amsidh.mvc.model.response.BaseResponse;
 import com.amsidh.mvc.model.response.address.AddressResponse;
 import com.amsidh.mvc.service.AddressService;
 import com.google.gson.Gson;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +42,7 @@ public class AddressController {
 
 	@PatchMapping("/{addressId}")
 	public BaseResponse updateAddress(@PathVariable Integer addressId,
-									  @Valid @RequestBody UpdateAddressRequest updateAddressRequest) {
+			@Valid @RequestBody UpdateAddressRequest updateAddressRequest) {
 		log.info("Request received to update an address with addressId {} and address {}", addressId,
 				gson.toJson(updateAddressRequest));
 		AddressResponse addressResponse = addressService.updateAddress(addressId, updateAddressRequest);
@@ -53,7 +63,8 @@ public class AddressController {
 		log.info("Request received to delete an address by addressId {} ", addressId);
 		addressService.deleteAddress(addressId);
 		log.info("Address with addressId {} deleted successfully", addressId);
-		return BaseResponse.builder().data(String.format("Address with addressId %d deleted successfully", addressId)).build();
+		return BaseResponse.builder().data(String.format("Address with addressId %d deleted successfully", addressId))
+				.build();
 	}
 
 	@GetMapping
