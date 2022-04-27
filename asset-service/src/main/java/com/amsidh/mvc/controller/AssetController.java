@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/assets")
+@RequestMapping("/asset-service/assets")
 @Slf4j
 @RequiredArgsConstructor
 public class AssetController {

@@ -1,0 +1,33 @@
+server:
+  port: ${SCHEDULER_SERVICE_PORT:8085}
+  servlet:
+    context-path: /api
+
+spring:
+  profiles:
+    include:
+      - common
+    active: dev
+---
+spring:
+  profiles: dev
+  jpa:
+    database: h2
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    #url: jdbc:h2:file:E:/workspaces/Gitxi2852Projects/person-management-system/h2/scheduler_db_dev
+    url: jdbc:h2:mem:scheduler_db_dev
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  sql:
+    init:
+      schema-locations: classpath:schema/quartz_tables_h2.sql
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+
+

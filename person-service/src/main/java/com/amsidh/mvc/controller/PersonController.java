@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/persons")
+@RequestMapping("/person-service/persons")
 @RequiredArgsConstructor
 @Slf4j
 public class PersonController {

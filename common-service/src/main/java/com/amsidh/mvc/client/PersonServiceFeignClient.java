@@ -5,8 +5,12 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "assetServiceFeignClient", url = "http://localhost:8084/api/asset-service/assets")
-public interface AssetServiceFeignClient {
-    @GetMapping("/{assetId}")
-    BaseResponse getAssetByAssetId(@PathVariable Integer assetId);
+@FeignClient(name = "person-client", url = "${person_service_url}")
+public interface PersonServiceFeignClient {
+
+    @GetMapping("/{personId}")
+    BaseResponse getPersonByPersonId(@PathVariable Integer personId);
+
+    @GetMapping
+    BaseResponse getPersons();
 }

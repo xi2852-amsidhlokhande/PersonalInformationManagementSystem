@@ -1,7 +1,7 @@
 server:
   port: ${ADDRESS_SERVICE_PORT:8083}
   servlet:
-    context-path: /address-service
+    context-path: /api
 spring:
   profiles:
     include:

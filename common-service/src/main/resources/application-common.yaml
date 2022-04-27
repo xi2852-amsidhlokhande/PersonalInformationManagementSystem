@@ -1,3 +1,7 @@
+person_service_url: http://localhost:8081/api/person-service/persons
+account_service_url: http://localhost:8082/api/account-service/accounts
+address_service_url: http://localhost:8083/api/address-service/addresses
+
 application:
   errors:
     # Common Error Code Configuration

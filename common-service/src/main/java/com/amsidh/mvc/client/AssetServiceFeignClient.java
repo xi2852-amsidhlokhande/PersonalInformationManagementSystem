@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "assetServiceFeignClient", url = "http://localhost:8084/asset-service/assets")
+@FeignClient(name = "assetServiceFeignClient", url = "http://localhost:8084/api/asset-service/assets")
 public interface AssetServiceFeignClient {
     @GetMapping("/{assetId}")
     BaseResponse getAssetByAssetId(@PathVariable Integer assetId);

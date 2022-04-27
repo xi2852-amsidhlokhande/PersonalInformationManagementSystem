@@ -20,7 +20,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/accounts")
+@RequestMapping("/account-service/accounts")
 public class AccountController {
     private final AccountService accountService;
     private final ObjectMapper objectMapper;
