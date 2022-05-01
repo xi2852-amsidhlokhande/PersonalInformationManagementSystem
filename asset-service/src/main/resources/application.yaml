@@ -16,7 +16,7 @@ spring:
     hibernate:
       ddl-auto: create
   datasource:
-    url: jdbc:h2:file:E:/workspaces/Gitxi2852Projects/person-management-system/h2/asset_db_dev
+    url: jdbc:h2:mem:asset_db_dev
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -29,7 +29,7 @@ spring:
     hibernate:
       ddl-auto: create
   datasource:
-    url: jdbc:h2:file:E:/workspaces/Gitxi2852Projects/person-management-system/h2/asset_db_uat
+    url: jdbc:h2:mem:asset_db_uat
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -42,7 +42,7 @@ spring:
     hibernate:
       ddl-auto: create
   datasource:
-    url: jdbc:h2:file:E:/workspaces/Gitxi2852Projects/person-management-system/h2/asset_db_prod
+    url: jdbc:h2:mem:asset_db_prod
     username: sa
     password:
     driver-class-name: org.h2.Driver
